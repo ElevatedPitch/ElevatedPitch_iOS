@@ -163,7 +163,8 @@ class SetEmailViewController: UIViewController {
         backButton.widthAnchor.constraint(equalToConstant: self.view.bounds.height * 0.05).isActive = true
         backButton.setImage(UIImage(named: "arrowIcon"), for: .normal)
         backButton.addTarget(self, action: #selector(handleBackMove), for: .touchUpInside)
-        
+        backButton.contentEdgeInsets = UIEdgeInsetsMake( -3, -3, -3, -3)
+
         let titleLabel = UILabel()
         self.view.addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
