@@ -60,11 +60,7 @@ class VideoChooseViewController: UIViewController, UIImagePickerControllerDelega
             let playerViewController = AVPlayerViewController()
             playerViewController.player = player
             
-            present(playerViewController, animated: true) {
-                playerViewController.player!.play()
-                
-                
-            }
+            
             
              let uid = FIRAuth.auth()?.currentUser?.uid
             
@@ -98,9 +94,25 @@ class VideoChooseViewController: UIViewController, UIImagePickerControllerDelega
 
             }
             let storageReference = FIRStorage.storage().reference().child(uid!).child(videoString)
-
+            let ai = UIActivityIndicatorView()
+            self.view.addSubview(ai)
+            ai.startAnimating()
+            ai.translatesAutoresizingMaskIntoConstraints = false
+            ai.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+            ai.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+            ai.heightAnchor.constraint(equalToConstant: 50).isActive = true
+            ai.widthAnchor.constraint(equalToConstant: 50).isActive = true
+            ai.color = UIColor.black
+            
+            let label = UILabel()
+            self.view.addSubview(label)
+            label.translatesAutoresizingMaskIntoConstraints = false
+            label.text = "Please wait..."
+            label.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+            label.centerYAnchor.constraint(equalTo: ai.bottomAnchor, constant: 20).isActive = true
+            label.font = UIFont(name: "AppleSDGothicNeo-Thin", size: 16)
             let uploadTask = storageReference.putFile(videoURL, metadata: nil, completion: { (metadata, error) in
-
+              
                 if (error == nil) {
                     print("successful upload")
                     
@@ -121,10 +133,22 @@ class VideoChooseViewController: UIViewController, UIImagePickerControllerDelega
             
             //Fix so it updates individual about the upload of their video
             let observe = uploadTask.observe(.progress, handler: { (snapshot) in
-                
                 let message = "\(snapshot.progress?.fractionCompleted)! * 100.0"
                 print(message)
-                
+                if (snapshot.progress?.fractionCompleted == 1.0) {
+                    print("Congrats")
+                    ai.stopAnimating()
+                    label.isHidden = true 
+                    let alert = UIAlertController(title: "Congrats", message: "Video was successfully upload", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (error) in
+                        
+                        self.handleMoveToProfile()
+                        
+                        
+                        }))
+                    self.present(alert, animated: true, completion: nil)
+
+                }
                 
             })
             let thumbnailCGImage = returnImage(fileURL: videoURL as NSURL)
