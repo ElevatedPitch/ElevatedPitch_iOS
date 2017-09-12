@@ -101,16 +101,46 @@ class SetEmailViewController: UIViewController {
         let segueController = VerificationCodeViewController()
         curUser.verificationCode = passwordString
         curUser.email = emailTF.text!
-        emailTF.text = "" 
         segueController.typeInt = 2
         curUser.previousController = "SetEmailViewController"
         segueController.curUser = curUser
-        present(segueController, animated: true, completion: nil)
+
+        FIRAuth.auth()?.fetchProviders(forEmail: curUser.email, completion: { (providers, error) in
+            
+             if  error != nil  {
+                let alert = UIAlertController(title: "Failure", message: error?.localizedDescription, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Change email", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                self.emailTF.text = ""
+            } else if providers?.count != nil {
+                let alert = UIAlertController(title: "Failure", message: "Email Address in use", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Change email", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                self.emailTF.text = ""
+
+             } else {
+            self.present(segueController, animated: true, completion: nil)
+                self.emailTF.text = ""
+
+            }
+            
+            })
+        
+        
+
+        
+        
+        
+        
+        
+        
 //            } else {
 //            let alert = UIAlertController(title: "Failure", message: "Not from UCLA", preferredStyle: .alert)
 //            alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
 //            self.present(alert, animated: true, completion: nil)
 //        }
+        
+
     }
     func checkEmailTF(email: String) -> Bool {
         if (email.contains("g.ucla.edu") || email.contains("ucla.edu")) {
