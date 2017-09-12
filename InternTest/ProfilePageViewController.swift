@@ -36,7 +36,8 @@ class ProfilePageViewController: UIViewController, UITableViewDelegate, UITableV
     let headerLabel = UILabel()
     let nameLabel = UILabel()
     let titleLabel = UILabel()
-    
+    var height2 = CGFloat()
+    var width = CGFloat()
     
     let cameraButton = UIButton()
     let messageButton = emailButton()
@@ -131,6 +132,7 @@ class ProfilePageViewController: UIViewController, UITableViewDelegate, UITableV
         let segueController = SearchViewController(nibName: nil, bundle: nil)
         segueController.previousController = ProfilePageViewController()
         present(segueController, animated: false, completion: nil)
+        
     }
     func moveToProfile(sender: UIButton) {
         
@@ -362,6 +364,8 @@ class ProfilePageViewController: UIViewController, UITableViewDelegate, UITableV
                     
                     if dictionary["Bio"] as? String != nil {
                         self.fullLabel.text = dictionary["Bio"] as! String
+                    } else {
+                        self.fullLabel.text = "Click update to add a bio..."
                     }
                     
                     if dictionary["Company Mission"] as? String != nil {
@@ -591,9 +595,11 @@ class ProfilePageViewController: UIViewController, UITableViewDelegate, UITableV
     }
 
     override func viewDidLoad() {
-
+        
         super.viewDidLoad()
         profileImageView.addObserver(self, forKeyPath: "image", options: NSKeyValueObservingOptions.new, context: nil)
+        height2 = self.view.bounds.height
+        width = self.view.bounds.width
 
         if (globalFeedString == "Employer") {
         checkIfUserLoggedInAsStudent()
@@ -681,9 +687,9 @@ class ProfilePageViewController: UIViewController, UITableViewDelegate, UITableV
             case 2:
                 return 150
             case 3:
-                return height + 100
+                return height + 140
             case 4:
-                return 3 * height + 300
+                return 4 * height + 150
             default:
                 return 150
                 
@@ -913,19 +919,29 @@ class ProfilePageViewController: UIViewController, UITableViewDelegate, UITableV
             firstVideoImageView.layer.borderWidth = 0.5
             firstVideoImageView.isUserInteractionEnabled = true
             
+            
+            //Check here
+            
+           
             let changeFirstVideoButton = UIButton()
-            firstVideoImageView.addSubview(changeFirstVideoButton)
+            cell.addSubview(changeFirstVideoButton)
             changeFirstVideoButton.translatesAutoresizingMaskIntoConstraints = false
-            changeFirstVideoButton.rightAnchor.constraint(equalTo: firstVideoImageView.rightAnchor).isActive = true
-            changeFirstVideoButton.bottomAnchor.constraint(equalTo: firstVideoImageView.bottomAnchor).isActive = true
-            changeFirstVideoButton.setTitle("Update", for: .normal)
-            changeFirstVideoButton.setTitleColor(UIColor.black, for: .normal)
-            changeFirstVideoButton.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 8)
-            changeFirstVideoButton.layer.backgroundColor = UIColor(red: 211/255, green: 211/255, blue: 211/255, alpha: 0.6).cgColor
+            changeFirstVideoButton.centerXAnchor.constraint(equalTo: cell.centerXAnchor).isActive = true
+            changeFirstVideoButton.widthAnchor.constraint(equalToConstant: width * 0.65).isActive = true
+            changeFirstVideoButton.topAnchor.constraint(equalTo: firstVideoImageView.bottomAnchor, constant: height2 * 0.03).isActive = true
+            
+            changeFirstVideoButton.heightAnchor.constraint(equalToConstant: height2 * 0.05).isActive = true
+            changeFirstVideoButton.setTitle("Update Video", for: .normal)
+            changeFirstVideoButton.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
+            changeFirstVideoButton.setTitleColor(UIColor.white, for: .normal)
+            changeFirstVideoButton.layer.cornerRadius = 10
+            changeFirstVideoButton.backgroundColor = UIColor(red: 100/255, green: 149/255, blue: 237/255, alpha: 1)
             changeFirstVideoButton.tag = 1
             changeFirstVideoButton.addTarget(self, action: #selector(chooseVideo), for: .touchUpInside)
+            
+
             if (firstVideoURl == "AddIcon") {
-                firstVideoImageView.image = UIImage(named: "AddIcon")
+                firstVideoImageView.image = UIImage(named: "NoVideo")
             } else {
                 var firstVideoButton = playButton()
                 firstVideoButton.playerURL = firstVideoURl
@@ -956,7 +972,7 @@ class ProfilePageViewController: UIViewController, UITableViewDelegate, UITableV
             var supplementalPlayButton = playButton()
             cell.addSubview(supplementalImageView)
             if (supplementalVideoURL == "AddIcon") {
-                supplementalImageView.image = UIImage(named: "AddIcon")
+                supplementalImageView.image = UIImage(named: "NoVideo")
             } else {
                 supplementalPlayButton.playerURL = supplementalVideoURL
                 supplementalImageView.addSubview(supplementalPlayButton)
@@ -973,26 +989,31 @@ class ProfilePageViewController: UIViewController, UITableViewDelegate, UITableV
             supplementalImageView.heightAnchor.constraint(equalToConstant: height).isActive = true
             supplementalImageView.centerXAnchor.constraint(equalTo: cell.centerXAnchor).isActive = true
             supplementalImageView.widthAnchor.constraint(equalToConstant: cell.bounds.width).isActive = true
-            supplementalImageView.topAnchor.constraint(equalTo: supplementalVideoLabel.bottomAnchor, constant: 75).isActive = true
+            supplementalImageView.topAnchor.constraint(equalTo: supplementalVideoLabel.bottomAnchor, constant: 50).isActive = true
             supplementalImageView.layer.borderWidth = 0.5
             supplementalImageView.isUserInteractionEnabled = true
             
             let changeSupplemental1 = UIButton()
-            supplementalImageView.addSubview(changeSupplemental1)
+            
+            cell.addSubview(changeSupplemental1)
             changeSupplemental1.translatesAutoresizingMaskIntoConstraints = false
-            changeSupplemental1.rightAnchor.constraint(equalTo: supplementalImageView.rightAnchor).isActive = true
-            changeSupplemental1.bottomAnchor.constraint(equalTo: supplementalImageView.bottomAnchor).isActive = true
-            changeSupplemental1.setTitle("Update", for: .normal)
-            changeSupplemental1.setTitleColor(UIColor.black, for: .normal)
-            changeSupplemental1.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 8)
-            changeSupplemental1.layer.backgroundColor = UIColor(red: 211/255, green: 211/255, blue: 211/255, alpha: 0.6).cgColor
+            changeSupplemental1.centerXAnchor.constraint(equalTo: cell.centerXAnchor).isActive = true
+            changeSupplemental1.widthAnchor.constraint(equalToConstant: width * 0.65).isActive = true
+            changeSupplemental1.topAnchor.constraint(equalTo: supplementalImageView.bottomAnchor, constant: height2 * 0.03).isActive = true
+            changeSupplemental1.heightAnchor.constraint(equalToConstant: height2 * 0.05).isActive = true
+            changeSupplemental1.setTitle("Update Video", for: .normal)
+            changeSupplemental1.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
+            changeSupplemental1.setTitleColor(UIColor.white, for: .normal)
+            changeSupplemental1.layer.cornerRadius = 10
+            changeSupplemental1.backgroundColor = UIColor(red: 100/255, green: 149/255, blue: 237/255, alpha: 1)
             changeSupplemental1.tag = 2
-            changeSupplemental1.addTarget(self, action: #selector(chooseVideo), for: .touchUpInside )
-           
+            changeSupplemental1.addTarget(self, action: #selector(chooseVideo), for: .touchUpInside)
+            
+
             cell.addSubview(supplementalImageView2)
             var supplementalPlayButton2 = playButton()
             if (supplementalVideoURL2 == "AddIcon") {
-                supplementalImageView2.image = UIImage(named: "AddIcon")
+                supplementalImageView2.image = UIImage(named: "NoVideo")
             } else {
                 supplementalPlayButton2.playerURL = supplementalVideoURL2
                 supplementalImageView2.addSubview(supplementalPlayButton2)
@@ -1013,23 +1034,25 @@ class ProfilePageViewController: UIViewController, UITableViewDelegate, UITableV
             supplementalImageView2.isUserInteractionEnabled = true
             
             let changeSupplemental2 = UIButton()
-            supplementalImageView2.addSubview(changeSupplemental2)
+            cell.addSubview(changeSupplemental2)
             changeSupplemental2.translatesAutoresizingMaskIntoConstraints = false
-            changeSupplemental2.rightAnchor.constraint(equalTo: supplementalImageView2.rightAnchor).isActive = true
-            changeSupplemental2.bottomAnchor.constraint(equalTo: supplementalImageView2.bottomAnchor).isActive = true
-            changeSupplemental2.setTitle("Update", for: .normal)
-            changeSupplemental2.setTitleColor(UIColor.black, for: .normal)
-            changeSupplemental2.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 8)
-            changeSupplemental2.layer.backgroundColor = UIColor(red: 211/255, green: 211/255, blue: 211/255, alpha: 0.6).cgColor
+            changeSupplemental2.centerXAnchor.constraint(equalTo: cell.centerXAnchor).isActive = true
+            changeSupplemental2.widthAnchor.constraint(equalToConstant: width * 0.65).isActive = true
+            changeSupplemental2.topAnchor.constraint(equalTo: supplementalImageView2.bottomAnchor, constant: height2 * 0.03).isActive = true
+            changeSupplemental2.heightAnchor.constraint(equalToConstant: height2 * 0.05).isActive = true
+            changeSupplemental2.setTitle("Update Video", for: .normal)
+            changeSupplemental2.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
+            changeSupplemental2.setTitleColor(UIColor.white, for: .normal)
+            changeSupplemental2.layer.cornerRadius = 10
+            changeSupplemental2.backgroundColor = UIColor(red: 100/255, green: 149/255, blue: 237/255, alpha: 1)
             changeSupplemental2.tag = 3
-            changeSupplemental2.addTarget(self, action: #selector(chooseVideo), for: .touchUpInside )
-
+            changeSupplemental2.addTarget(self, action: #selector(chooseVideo), for: .touchUpInside)
             
             
             cell.addSubview(supplementalImageView3)
             var supplementalPlayButton3 = playButton()
             if (supplementalVideoURL3 == "AddIcon") {
-                supplementalImageView3.image = UIImage(named: "AddIcon")
+                supplementalImageView3.image = UIImage(named: "NoVideo")
             } else {
                 supplementalPlayButton3.playerURL = supplementalVideoURL3
                 supplementalImageView3.addSubview(supplementalPlayButton3)
@@ -1052,16 +1075,21 @@ class ProfilePageViewController: UIViewController, UITableViewDelegate, UITableV
             supplementalImageView3.isUserInteractionEnabled = true
             
             let changeSupplemental3 = UIButton()
-            supplementalImageView3.addSubview(changeSupplemental3)
+            
+            cell.addSubview(changeSupplemental3)
             changeSupplemental3.translatesAutoresizingMaskIntoConstraints = false
-            changeSupplemental3.rightAnchor.constraint(equalTo: supplementalImageView3.rightAnchor).isActive = true
-            changeSupplemental3.bottomAnchor.constraint(equalTo: supplementalImageView3.bottomAnchor).isActive = true
-            changeSupplemental3.setTitle("Update", for: .normal)
-            changeSupplemental3.setTitleColor(UIColor.black, for: .normal)
-            changeSupplemental3.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 8)
-            changeSupplemental3.layer.backgroundColor = UIColor(red: 211/255, green: 211/255, blue: 211/255, alpha: 0.6).cgColor
+            changeSupplemental3.centerXAnchor.constraint(equalTo: cell.centerXAnchor).isActive = true
+            changeSupplemental3.widthAnchor.constraint(equalToConstant: width * 0.65).isActive = true
+            changeSupplemental3.topAnchor.constraint(equalTo: supplementalImageView3.bottomAnchor, constant: height2 * 0.03).isActive = true
+            changeSupplemental3.heightAnchor.constraint(equalToConstant: height2 * 0.05).isActive = true
+            changeSupplemental3.setTitle("Update Video", for: .normal)
+            changeSupplemental3.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
+            changeSupplemental3.setTitleColor(UIColor.white, for: .normal)
+            changeSupplemental3.layer.cornerRadius = 10
+            changeSupplemental3.backgroundColor = UIColor(red: 100/255, green: 149/255, blue: 237/255, alpha: 1)
             changeSupplemental3.tag = 4
-            changeSupplemental3.addTarget(self, action: #selector(chooseVideo), for: .touchUpInside )
+            changeSupplemental3.addTarget(self, action: #selector(chooseVideo), for: .touchUpInside)
+            
 
             
             
