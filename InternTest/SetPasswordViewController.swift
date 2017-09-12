@@ -110,7 +110,8 @@ class SetPasswordViewController: UIViewController {
         backButton.widthAnchor.constraint(equalToConstant: self.view.bounds.height * 0.05).isActive = true
         backButton.setImage(UIImage(named: "arrowIcon"), for: .normal)
         backButton.addTarget(self, action: #selector(handleBackMove), for: .touchUpInside)
-        
+        backButton.contentEdgeInsets = UIEdgeInsetsMake( -3, -3, -3, -3)
+
 
         self.view.addSubview(password)
         password.translatesAutoresizingMaskIntoConstraints = false
