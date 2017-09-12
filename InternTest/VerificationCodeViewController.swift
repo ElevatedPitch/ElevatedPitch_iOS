@@ -91,8 +91,9 @@ class VerificationCodeViewController: UIViewController {
     builder.header.to = [MCOAddress(displayName: curUser.name, mailbox: curUser.email)]
     builder.header.from = MCOAddress(displayName: "Elevated Pitch", mailbox: "elevatedpitchhelp@gmail.com")
     builder.header.subject = "Invitation to Elevated Pitch"
-    builder.htmlBody = "Welcome to Elevated Pitch! We've been expecting you! Here is your new verification code: "
+    builder.htmlBody = "Welcome to Elevated Pitch! Use "
     builder.htmlBody.append(passwordString)
+    builder.htmlBody.append(" as your verification code for the app")
     let sendData = builder.data()
     let send = emailSession.sendOperation(with: sendData)
     send?.start { (error) in
