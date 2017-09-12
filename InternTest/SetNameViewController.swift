@@ -92,6 +92,7 @@ class SetNameViewController: UIViewController {
         backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 10).isActive = true
         backButton.heightAnchor.constraint(equalToConstant: self.view.bounds.height * 0.05).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: self.view.bounds.height * 0.05).isActive = true
+        backButton.contentEdgeInsets = UIEdgeInsetsMake(-3, -3, -3, -3)
         backButton.setImage(UIImage(named: "arrowIcon"), for: .normal)
         backButton.addTarget(self, action: #selector(handleMoveToLanding), for: .touchUpInside)
         
